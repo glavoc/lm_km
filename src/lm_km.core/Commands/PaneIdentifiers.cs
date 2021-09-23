@@ -22,10 +22,6 @@ namespace lm_km.core
             return Assembly.GetExecutingAssembly().Location;
         }
 
-        public static string BitmapsFolder()
-        {
-            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "SMG_Keynote_Manager_rsc");
-        }
         #endregion
     }
 }

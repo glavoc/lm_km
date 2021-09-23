@@ -46,14 +46,14 @@ namespace lm_km.core
 
         private void DiscardBtnExec()
         {
-            MediatorHelper.NotifyColleagues("ChangeView", new MainPageContainerViewModel());
+            MediatorHelper.NotifyColleagues("ChangeView", new KeynoteTreeViewModel());
         }
 
 
         internal void ApplyBtnExec()
         {
             CurrentKeynote.State = KeynoteStateTypes.Add;
-            MediatorHelper.NotifyColleagues("ChangeView", new MainPageContainerViewModel());
+            MediatorHelper.NotifyColleagues("ChangeView", new KeynoteTreeViewModel());
         }
 
     }

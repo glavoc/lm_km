@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\PaneIdentifiers.cs" />
+    <Compile Include="CoreAssembly.cs" />
     <Compile Include="Types\KeynoteStateTypes.cs" />
     <Compile Include="ViewModels\AddEditViewModel.cs" />
     <Compile Include="ViewModels\Commands\RelayCommand.cs" />

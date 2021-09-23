@@ -1,5 +1,6 @@
 ﻿using Autodesk.Revit.UI;
 using lm_km.res;
+using lm_km.core;
 using System;
 using System.Reflection;
 
@@ -23,13 +24,12 @@ namespace lm_km.ui
             var btnDataName = Guid.NewGuid().ToString();
 
             // Sets the button data.
-            var btnData = new PushButtonData(btnDataName, data.Label, Assembly.GetExecutingAssembly().Location, data.CommandNamespacePath)
+            var btnData = new PushButtonData(btnDataName, data.Label, CoreAssembly.GetAssemblyLocation(), data.CommandNamespacePath)
             {
                 ToolTip = data.Tooltip,
                 LargeImage = ResourceImage.GetIcon(data.IconImageName),
                 ToolTipImage = ResourceImage.GetIcon(data.TooltipImageName)
             };
-
             // Return created button and host it on panel provided in required data model.
             return data.Panel.AddItem(btnData) as PushButton;
         }

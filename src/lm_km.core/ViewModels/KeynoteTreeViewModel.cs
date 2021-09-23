@@ -33,7 +33,7 @@ namespace lm_km.core
         /// </summary>
         public KeynoteTreeViewModel()
         {
-            BuildTree();
+            //BuildTree();
 
             _addViewBtnCommand = new RelayCommand(x => AddViewBtnExec(), x => SelectedKeynote != null);
             _editViewBtnCommand = new RelayCommand(x => EditViewBtnExec(), x => SelectedKeynote != null);

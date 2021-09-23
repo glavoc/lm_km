@@ -24,10 +24,10 @@ namespace lm_km.ui
     public partial class MainPageContainerView : Page, IDisposable, IDockablePaneProvider
     {
 
-        public MainPageContainerView()
+        public MainPageContainerView(UIApplication uiapp)
         {
             InitializeComponent();
-            DataContext = new MainPageContainerViewModel();
+            DataContext = new MainPageContainerViewModel(uiapp);
             // TODO Repopulate treeview on RVT active document change
         }
 
@@ -42,15 +42,6 @@ namespace lm_km.ui
             {
                 DockPosition = DockPosition.Right
             };
-        }
-
-        public void OnClose()
-        {
-            var main = Application.Current.MainWindow;
-            if (main != null)
-            {
-                main.Close();
-            }
         }
 
         public void Dispose() { }
