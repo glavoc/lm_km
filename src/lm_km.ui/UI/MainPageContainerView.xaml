@@ -1,0 +1,30 @@
+﻿<Page x:Class="lm_km.ui.MainPageContainerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:lm_km.ui"
+    xmlns:core="clr-namespace:lm_km.core;assembly=lm_km.core"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../App.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+    <ContentControl Content="{Binding CurrentPage}">
+        <ContentControl.Resources>
+            <DataTemplate DataType="{x:Type core:KeynoteTreeViewModel}">
+                <local:TreeView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type core:AddEditViewModel}">
+                <local:AddEditView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type core:DeleteViewModel}">
+                <local:DeleteView/>
+            </DataTemplate>
+        </ContentControl.Resources>
+    </ContentControl>
+
+</Page>

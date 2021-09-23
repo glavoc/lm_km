@@ -1,0 +1,63 @@
+﻿<local:PageBase x:Class="lm_km.ui.DeleteView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:lm_km.ui"
+        mc:Ignorable="d">
+    <local:PageBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../App.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </local:PageBase.Resources>
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0,0">
+                <GradientStop Color="#FF62297A" Offset="0"/>
+                <GradientStop Color="#FFB73058" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="89*"/>
+            <RowDefinition Height="314*"/>
+            <RowDefinition Height="49*"/>
+        </Grid.RowDefinitions>
+        <TextBlock 
+            Margin="10,10,10,10" 
+            TextWrapping="Wrap"
+            Grid.Row="0">
+            <Run Text="{Binding CurrentKeynote.KeynoteCategoryNumber}"/>
+            <Run Text="{Binding CurrentKeynote.KeynoteText}"/><LineBreak/>
+            <Run Text="These are the views containing Tag referencing deleted Keynote"/>
+            <Run Text="."/><LineBreak/><Run/>
+            <Run Text="You can view the Tags affected by double clicking on the Views listed below."/>
+        </TextBlock>
+        <DataGrid 
+            x:Name="DeleteKeynoteListBox" 
+            Margin="10,10,10,10" 
+            ItemsSource="{Binding GetRevitItems, Mode=OneWay}"
+            SelectionUnit="FullRow" SelectionMode="Single" 
+            PreviewMouseDoubleClick="DeleteKeynoteListBox_PreviewMouseDoubleClick">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="{Binding Key.Name}"/>
+                <DataGridTextColumn Header="{Binding Value.Name}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
+            <Button 
+                x:Name="OKButton" 
+                Content="Apply" 
+                Width="90"
+                Command="{Binding ApplyBtnCommand}"
+                Style="{StaticResource MainButton}"/>
+            <Button 
+                x:Name="DiscardButton" 
+                Content="Discard"
+                Width="90" 
+                Command="{Binding DiscardBtnCommand}"
+                Style="{StaticResource MainButton}"/>
+        </StackPanel>
+    </Grid>
+</local:PageBase>

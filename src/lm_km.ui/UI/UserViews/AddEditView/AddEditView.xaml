@@ -1,0 +1,115 @@
+﻿<local:PageBase x:Class="lm_km.ui.AddEditView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local ="clr-namespace:lm_km.ui"
+        mc:Ignorable="d">
+    <local:PageBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../App.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </local:PageBase.Resources>
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0,0">
+                <GradientStop Color="#FF62297A" Offset="0"/>
+                <GradientStop Color="#FFB73058" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="67.333"/>
+            <RowDefinition Height="26.667"/>
+            <RowDefinition Height="37"/>
+            <RowDefinition Height="29"/>
+            <RowDefinition Height="63"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="177*"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <ComboBox 
+            IsEnabled="{Binding IsComboBoxEnabled}"
+            ItemsSource="{Binding KeynotesList}" 
+            SelectedItem="{Binding CurrentKeynote.KeynoteParent, Mode=OneWay}" 
+            Style="{StaticResource MainComboBox}"
+            DisplayMemberPath="KeynoteCategoryNumber" 
+            x:Name="ParentCategoryComboBox" Margin="10,5" 
+            Grid.Row="2" />
+        <Label 
+            HorizontalAlignment="Left" 
+            Margin="10,5,0,3" 
+            Grid.Row="3" 
+            Width="91" 
+            Content="Category:" 
+            VerticalContentAlignment="Bottom" 
+            Padding="0"
+            Foreground="{StaticResource BlueFontBrush}"/>
+        <TextBox 
+            x:Name="KeynoteCategoryTextBox"
+            Text="{Binding CurrentKeynote.KeynoteCategoryNumber}"
+            Margin="10,5,10,0" TextWrapping="Wrap" 
+            Grid.Row="4" 
+            VerticalContentAlignment="Center"
+            FontWeight="Bold" 
+            VerticalAlignment="Top"
+            Height="17.96"
+            d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"
+            Style="{StaticResource MainTextBox}"/>
+        <TextBlock 
+            x:Name="ParentCategoryTextBlock" 
+            Text="{Binding CurrentKeynote.KeynoteParentCategory}" 
+            Margin="10,5" 
+            TextWrapping="Wrap" 
+            Padding="5"
+            FontWeight="Bold"
+            Foreground="{StaticResource GrayFontBrush}"
+            FontSize="{StaticResource ExtraLargeFontSize}"/>
+        <TextBox 
+            x:Name="KeynoteTextTextBox" 
+            Text="{Binding CurrentKeynote.KeynoteText}" 
+            Margin="10,5,10,10" 
+            TextWrapping="Wrap" 
+            Grid.Row="6" 
+            Style="{StaticResource MainTextBox}"/>
+        <StackPanel Grid.Row="7" Orientation="Horizontal">
+            <Button x:Name="AddUserKeynoteButton" 
+                Command="{Binding ApplyBtnCommand}"
+                Content="Apply" 
+                Width="90">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MainButton}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text.Length, ElementName=KeynoteCategoryTextBox, UpdateSourceTrigger=PropertyChanged}" Value="0">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button 
+                x:Name="DiscardUserKeynoteButton" 
+                Style="{StaticResource MainButton}"
+                Command="{Binding DiscardBtnCommand}" 
+                Content="Discard"
+                Width="90"/>
+        </StackPanel>
+        <Label 
+            Content="Text:" 
+            HorizontalAlignment="Left"
+            Margin="10,8.04,0,3" 
+            Grid.Row="5" 
+            Width="74" 
+            Padding="0"
+            Foreground="{StaticResource BlueFontBrush}"/>
+        <Label
+            Content="Parent Category:"
+            HorizontalAlignment="Left" 
+            Margin="10,0,0,5" Grid.Row="1" 
+            Width="93.334"
+            Padding="0" 
+            VerticalAlignment="Bottom"
+            Foreground="{StaticResource BlueFontBrush}"/>
+    </Grid>
+</local:PageBase>

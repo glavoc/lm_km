@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>Keynote Manager</Name>
+    <Assembly>lm_km.dll</Assembly>
+    <FullClassName>lm_km.Main</FullClassName>
+    <ClientId>8E6CF6C5-BF59-43E4-B9C6-819D47B81E85</ClientId>
+    <VendorId>LM</VendorId>
+    <VendorDescription>populate later</VendorDescription>
+  </AddIn>
+</RevitAddIns>
+

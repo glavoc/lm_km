@@ -1,0 +1,127 @@
+﻿<local:PageBase x:Name="pageBase" x:Class="lm_km.ui.TreeView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+      xmlns:local="clr-namespace:lm_km.ui"
+      xmlns:core="clr-namespace:lm_km.core;assembly=lm_km.core"
+      mc:Ignorable="d" 
+      MinHeight="300" MinWidth="200">
+
+    <local:PageBase.Resources>
+        <!--- Styles -->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../App.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <local:KeynoteStateConverter x:Key="StateConverter"/>
+        </ResourceDictionary>
+    </local:PageBase.Resources>
+    <Border 
+        BorderBrush="{StaticResource MainBordersBrush}" 
+        BorderThickness="1">
+        <Grid>
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0,0">
+                    <GradientStop Color="#FF62297A" Offset="0"/>
+                    <GradientStop Color="#FFB73058" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition MinHeight="200"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Row="0">
+                <Button 
+                    Command="{Binding SearchCommand}" 
+                    Content="Find" 
+                    Padding="3"
+                    Width="46"
+                    FontSize="{StaticResource SmallFontSize}" 
+                    HorizontalAlignment="Left" 
+                    HorizontalContentAlignment="Right"
+                    Margin="10,10,0,10"
+                    Style="{StaticResource MainButton}"
+                    />
+                <TextBox 
+                    x:Name="searchTextBox"
+                    KeyDown="searchTextBox_KeyDown"
+                    Width="280"
+                    HorizontalAlignment="Stretch"
+                    Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                    Background="{StaticResource MainLightBackgroundBrush}"
+                    Foreground="{StaticResource OrangeFontBrush}"
+                    VerticalContentAlignment="Center"
+                    Margin="0,10,0,10"
+                    BorderBrush="{StaticResource MainBordersBrush}"/>
+            </StackPanel>
+            <TreeView 
+                x:Name="TreeView1"
+                Background="{StaticResource MainBackgroundBrush}"
+                Grid.Row="1" 
+                Margin="10" 
+                FontFamily="Consolas" 
+                FontSize="12"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                ItemsSource="{Binding RootKeynotes, Mode=TwoWay}"
+                SelectedItemChanged="TreeView1_SelectedItemChanged"
+                MouseUp="TreeView1_MouseUp">
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="TreeViewItem">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                        <Setter Property="FontWeight" Value="Normal" />
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="FontWeight" Value="Bold" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TreeView.ItemContainerStyle>
+                <TreeView.ContextMenu>
+                    <ContextMenu 
+                        Name="ActionsContextMenu"
+                        Style="{StaticResource MainContextMenu}">
+                        <MenuItem 
+                            Header="Edit" 
+                            Command="{Binding EditViewBtnCommand }"/>
+                        <MenuItem 
+                            Header="Add" 
+                            Command="{Binding AddViewBtnCommand}"/>
+                        <MenuItem 
+                            Header="Delete" 
+                            Command="{Binding DeleteViewBtnCommand}"/>
+                    </ContextMenu>
+                </TreeView.ContextMenu>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate 
+                        DataType="{x:Type core:KeynoteViewModel}"
+                        ItemsSource="{Binding NestedKeynotes}">
+                        <StackPanel 
+                            Orientation="Horizontal"
+                            Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}, Path=ActualWidth}"
+                            Background="{Binding State, Converter={StaticResource StateConverter}}">
+                            <TextBlock Text="{Binding KeynoteCategoryNumber}" 
+                                       FontWeight="Bold" 
+                                       Foreground="{DynamicResource YellowFontBrush}"/>
+                            <TextBlock Text="  " 
+                                       Foreground="{DynamicResource YellowFontBrush}"/>
+                            <TextBlock Text="{Binding KeynoteText}" 
+                                        TextWrapping="Wrap"
+                                       Foreground="{DynamicResource YellowFontBrush}"/>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            <Button 
+                x:Name="buttonPopulate" 
+                Command="{Binding RefreshBtnCommand}"
+                Style="{StaticResource MainButton}"
+                Content="Sync"
+                Grid.Row="2"/>
+
+        </Grid>
+    </Border>
+</local:PageBase> 
