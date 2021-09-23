@@ -12,7 +12,7 @@ namespace lm_km.core
         /// <value>
         /// The Revit UIControlledApplication.
         /// </value>
-        public static UIControlledApplication RVT_ControlledApp { get; set; }
+        public static UIControlledApplication RVT_UIControlledApp  { get; set; }
         #endregion
     }
 }
