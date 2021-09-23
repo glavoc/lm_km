@@ -25,9 +25,9 @@ namespace lm_km
             
             // Initialize whole plugin's user interface.
             var ui = new SetupInterface();
-            ui.Initialize(RVT_App.RVT_ControlledApp);
+            ui.Initialize(RVT_App.RVT_UIControlledApp);
 
-            application.ControlledApplication.ApplicationInitialized += DockablePaneRegisters;
+            RVT_App.RVT_UIControlledApp.ControlledApplication.ApplicationInitialized += DockablePaneRegisters;
 
             return Result.Succeeded;
         }
