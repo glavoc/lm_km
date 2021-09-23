@@ -21,7 +21,7 @@ namespace lm_km
         public Result OnStartup(UIControlledApplication application)
         {
             // Assign to singleton
-            RVT_App.RVT_ControlledApp = application;
+            RVT_App.RVT_UIControlledApp = application;
             
             // Initialize whole plugin's user interface.
             var ui = new SetupInterface();
