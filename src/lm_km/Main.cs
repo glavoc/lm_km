@@ -1,6 +1,7 @@
-﻿using Autodesk.Revit.ApplicationServices;
+using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.UI;
 using lm_km.ui;
+using lm_km.core;
 
 namespace lm_km
 {
@@ -19,9 +20,12 @@ namespace lm_km
 
         public Result OnStartup(UIControlledApplication application)
         {
+            // Assign to singleton
+            RVT_App.RVT_ControlledApp = application;
+            
             // Initialize whole plugin's user interface.
             var ui = new SetupInterface();
-            ui.Initialize(application);
+            ui.Initialize(RVT_App.RVT_ControlledApp);
 
             application.ControlledApplication.ApplicationInitialized += DockablePaneRegisters;
 
