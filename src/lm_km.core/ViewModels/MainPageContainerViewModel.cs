@@ -17,7 +17,7 @@ namespace lm_km.core
         public MainPageContainerViewModel()
         {
             CurrentPage = new KeynoteTreeViewModel();
-            RVT_App.RVT_ControlledApp.ViewActivated += new EventHandler<ViewActivatedEventArgs>(OnRevitViewChanged);
+            RVT_App.RVT_UIControlledApp.ViewActivated += new EventHandler<ViewActivatedEventArgs>(OnRevitViewChanged);
             MediatorHelper.Register("ChangeView", OnChangeView);
         }
 
