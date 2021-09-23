@@ -9,17 +9,15 @@ namespace lm_km.core
 {
     public class MainPageContainerViewModel : ViewModelBase
     {
-        private Autodesk.Revit.ApplicationServices.Application _app;
         private ViewModelBase _currentPage;
         private Dictionary<Document, ViewModelBase> _RVTDocDict = new Dictionary<Document, ViewModelBase>();
         public ViewModelBase CurrentPage { get { return _currentPage; } set { _currentPage = value; OnPropertyChanged(nameof(CurrentPage)); } }
 
 
-        public MainPageContainerViewModel(UIApplication uiapp)
+        public MainPageContainerViewModel()
         {
-            _app = uiapp.Application;
             CurrentPage = new KeynoteTreeViewModel();
-            uiapp.ViewActivated += new EventHandler<ViewActivatedEventArgs>(OnRevitViewChanged);
+            RVT_App.RVT_ControlledApp.ViewActivated += new EventHandler<ViewActivatedEventArgs>(OnRevitViewChanged);
             MediatorHelper.Register("ChangeView", OnChangeView);
         }
 
