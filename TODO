@@ -1,0 +1,4 @@
+1. create a new pub sub pattern for changing KM_APP views events for every new RVT document opened.
+2. subscribe revit's viewchanged event in registerdockablepane
+3. pass the pubsub mediator parameter through viewmodels so that when child view calls to change the view to treeview it calls from that perticular document pubsub object
+4. change the KeynoteList class to be non static, instantiate it in TreeViewModel constructor with a path variable
