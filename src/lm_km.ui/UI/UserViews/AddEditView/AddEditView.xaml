@@ -8,7 +8,7 @@
     <local:PageBase.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../App.xaml"/>
+                <ResourceDictionary Source="../../../App.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </local:PageBase.Resources>
@@ -31,7 +31,7 @@
         </Grid.RowDefinitions>
         <ComboBox 
             IsEnabled="{Binding IsComboBoxEnabled}"
-            ItemsSource="{Binding KeynotesList}" 
+            ItemsSource="{Binding KeynoteRepository}" 
             SelectedItem="{Binding CurrentKeynote.KeynoteParent, Mode=OneWay}" 
             Style="{StaticResource MainComboBox}"
             DisplayMemberPath="KeynoteCategoryNumber" 
@@ -48,7 +48,7 @@
             Foreground="{StaticResource BlueFontBrush}"/>
         <TextBox 
             x:Name="KeynoteCategoryTextBox"
-            Text="{Binding CurrentKeynote.KeynoteCategoryNumber}"
+            Text="{Binding CurrentKeynote.Category}"
             Margin="10,5,10,0" TextWrapping="Wrap" 
             Grid.Row="4" 
             VerticalContentAlignment="Center"
@@ -59,7 +59,7 @@
             Style="{StaticResource MainTextBox}"/>
         <TextBlock 
             x:Name="ParentCategoryTextBlock" 
-            Text="{Binding CurrentKeynote.KeynoteParentCategory}" 
+            Text="{Binding CurrentKeynote.Category}" 
             Margin="10,5" 
             TextWrapping="Wrap" 
             Padding="5"
@@ -68,7 +68,7 @@
             FontSize="{StaticResource ExtraLargeFontSize}"/>
         <TextBox 
             x:Name="KeynoteTextTextBox" 
-            Text="{Binding CurrentKeynote.KeynoteText}" 
+            Text="{Binding CurrentKeynote.Text}" 
             Margin="10,5,10,10" 
             TextWrapping="Wrap" 
             Grid.Row="6" 

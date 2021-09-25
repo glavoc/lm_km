@@ -24,10 +24,10 @@ namespace lm_km.ui
     public partial class MainPageContainerView : Page, IDisposable, IDockablePaneProvider
     {
 
-        public MainPageContainerView(UIApplication uiapp)
+        public MainPageContainerView()
         {
             InitializeComponent();
-            DataContext = new MainPageContainerViewModel(uiapp);
+            DataContext = new MainPageContainerViewModel();
             // TODO Repopulate treeview on RVT active document change
         }
 

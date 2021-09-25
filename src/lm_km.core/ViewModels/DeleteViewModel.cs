@@ -9,16 +9,16 @@ namespace lm_km.core
 {
     public class DeleteViewModel : ViewModelBase
     {
+        private KeynoteRepository _keynoteRepository;
         private ICommand _applyBtnCommand;
         private ICommand _discardBtnCommand;
 
-        private KeynoteViewModel _currentKeynote;
-
-        public DeleteViewModel(KeynoteViewModel currentKeynote)
+        public DeleteViewModel(KeynoteViewModel currentKeynote, KeynoteRepository keynoteRepository)
         {
-            _currentKeynote = currentKeynote;
+            CurrentKeynote = currentKeynote;
+            _keynoteRepository = keynoteRepository;
         }
-        public KeynoteViewModel CurrentKeynote { get => _currentKeynote; }
+        public KeynoteViewModel CurrentKeynote { get; }
 
         public ICommand DiscardBtnCommand
         {
@@ -44,19 +44,20 @@ namespace lm_km.core
         }
 
 
+
         /// <summary>
         /// Deletes <see cref="SelectedKeynote"/>
         /// </summary>
         internal void ApplyBtnExec()
         {
+            _keynoteRepository.Delete(CurrentKeynote.Keynote);
             CurrentKeynote.State = KeynoteStateTypes.Delete;
-            //_pageStore.ChangeCurrentPage(_pageStore.MainPage);
+            MediatorHelper.NotifyColleagues("NavigateHome", null);
         }
 
         private void DiscardBtnExec()
         {
-           // _pageStore.ChangeCurrentPage(_pageStore.MainPage);
+            MediatorHelper.NotifyColleagues("NavigateHome", null);
         }
-
     }
 }

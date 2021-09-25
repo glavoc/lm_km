@@ -55,9 +55,11 @@ namespace lm_km
         /// <exception cref="System.NotImplementedException"></exception>
         private void DockablePaneRegisters(object sender, Autodesk.Revit.DB.Events.ApplicationInitializedEventArgs e)
         {
+            // set the global static variable
+            RVT_App.RVT_UIApp = new UIApplication(sender as Application);
             // Register dockable pane.
             var familyManagerRegisterCommand = new RegisterKMCommand();
-            familyManagerRegisterCommand.Execute(new UIApplication(sender as Application));
+            familyManagerRegisterCommand.Execute(RVT_App.RVT_UIApp);
         }
 
         #endregion

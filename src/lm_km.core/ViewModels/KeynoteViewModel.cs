@@ -11,10 +11,8 @@ namespace lm_km.core
     {
         #region private parameters
         private ObservableCollection<KeynoteViewModel> _nestedKeynotes;
-        private KeynoteViewModel _parent;
         private bool _isExpanded;
         private bool _isSelected;
-        private bool _inTxn = false;
         private KeynoteStateTypes _state = KeynoteStateTypes.None;
         #endregion
 
@@ -24,6 +22,7 @@ namespace lm_km.core
         }
 
         #region public properties 
+        public Keynote Keynote { get; set; }
         public string Text 
         { 
             get 
@@ -49,17 +48,30 @@ namespace lm_km.core
                 base.OnPropertyChanged(nameof(Category)); 
             } 
         }
-        public KeynoteViewModel Parent 
+        public string Parent 
         {
-            get { return _parent; }
-            set 
+            get 
             { 
-                _parent = value; 
+                return Keynote.Parent; 
+            }
+            set 
+            {
+                Keynote.Parent = value; 
                 base.OnPropertyChanged(nameof(Parent)); 
             } 
         }
-        public Keynote Keynote { get; set; }
-        public ObservableCollection<KeynoteViewModel> NestedKeynotes { get { return _nestedKeynotes; } set { _nestedKeynotes = value; base.OnPropertyChanged(nameof(NestedKeynotes)); } }
+        public ObservableCollection<KeynoteViewModel> NestedKeynotes 
+        { 
+            get 
+            { 
+                return _nestedKeynotes; 
+            } 
+            set 
+            { 
+                _nestedKeynotes = value; 
+                base.OnPropertyChanged(nameof(NestedKeynotes)); 
+            } 
+        }
 
         public bool IsExpanded
         {
@@ -73,8 +85,8 @@ namespace lm_km.core
                 }
 
                 // Expand all the way up to the root.
-                if (_isExpanded && Parent != null)
-                    Parent.IsExpanded = true;
+                //if (_isExpanded && Parent != null)
+                    //Parent.IsExpanded = true;
             }
         }
 
@@ -88,7 +100,18 @@ namespace lm_km.core
             }
         }
 
-        public KeynoteStateTypes State { get { return _state; } set { _state = value; base.OnPropertyChanged("State"); } }
+        public KeynoteStateTypes State 
+        { 
+            get 
+            { 
+                return _state; 
+            } 
+            set 
+            { 
+                _state = value; 
+                base.OnPropertyChanged("State"); 
+            } 
+        }
         #endregion
 
 

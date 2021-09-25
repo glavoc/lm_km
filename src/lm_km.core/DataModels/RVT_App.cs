@@ -1,4 +1,3 @@
-using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.UI;
 
 namespace lm_km.core
@@ -13,6 +12,13 @@ namespace lm_km.core
         /// The Revit UIControlledApplication.
         /// </value>
         public static UIControlledApplication RVT_UIControlledApp  { get; set; }
+        /// <summary>
+        /// Gets or sets the <see cref="Autodesk.Revit.UI.UIApplication"/>
+        /// </summary>
+        /// <value>
+        /// The Revit UIApplication.
+        /// </value>
+        public static UIApplication RVT_UIApp  { get; set; }
         #endregion
     }
 }

@@ -8,7 +8,7 @@
     <local:PageBase.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../App.xaml"/>
+                <ResourceDictionary Source="../../../App.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </local:PageBase.Resources>

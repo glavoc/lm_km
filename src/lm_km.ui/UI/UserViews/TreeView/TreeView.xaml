@@ -103,12 +103,12 @@
                             Orientation="Horizontal"
                             Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}, Path=ActualWidth}"
                             Background="{Binding State, Converter={StaticResource StateConverter}}">
-                            <TextBlock Text="{Binding KeynoteCategoryNumber}" 
+                            <TextBlock Text="{Binding Category}" 
                                        FontWeight="Bold" 
                                        Foreground="{DynamicResource YellowFontBrush}"/>
                             <TextBlock Text="  " 
                                        Foreground="{DynamicResource YellowFontBrush}"/>
-                            <TextBlock Text="{Binding KeynoteText}" 
+                            <TextBlock Text="{Binding Text}" 
                                         TextWrapping="Wrap"
                                        Foreground="{DynamicResource YellowFontBrush}"/>
                         </StackPanel>

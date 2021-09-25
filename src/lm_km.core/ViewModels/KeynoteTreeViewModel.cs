@@ -15,14 +15,13 @@ namespace lm_km.core
         private ObservableCollection<KeynoteViewModel> _rootKeynotes;
         private string _searchText = String.Empty;
         private KeynoteViewModel _selectedKeynote;
-        private List<KeynoteViewModel> _keynoteList;
+        private ObservableCollection<KeynoteViewModel> _keynoteList;
+        private KeynoteRepository _keynoteRepository;
         private ICommand _addViewBtnCommand;
         private ICommand _editViewBtnCommand;
         private ICommand _deleteViewBtnCommand;
         private ICommand _searchCommand;
         private ICommand _refreshBtnCommand;
-
-        private string _path = @"F:\Documents LM\Coding\Projects\NET\lm_km\dat\KEYNOTES_TE AWA MANSHED.txt";
 
         #endregion private fields
 
@@ -33,14 +32,16 @@ namespace lm_km.core
         /// </summary>
         public KeynoteTreeViewModel()
         {
-            //BuildTree();
-
-            _addViewBtnCommand = new RelayCommand(x => AddViewBtnExec(), x => SelectedKeynote != null);
+            _keynoteRepository = new KeynoteRepository();
+            _keynoteRepository.KeynoteAdded += this.KeynoteAdded;
+            _keynoteRepository.KeynoteDeleted += this.KeynoteDeleted;
+            _addViewBtnCommand = new RelayCommand(x => AddViewBtnExec());
             _editViewBtnCommand = new RelayCommand(x => EditViewBtnExec(), x => SelectedKeynote != null);
             _deleteViewBtnCommand = new RelayCommand(x => DeleteViewBtnExec(), x => SelectedKeynote != null);
             _refreshBtnCommand = new RelayCommand(x => { RefreshBtnExec(); });
             _searchCommand = new RelayCommand(x => { { PerformSearch(); } });
         }
+
 
         #endregion Constructor
 
@@ -55,8 +56,32 @@ namespace lm_km.core
         #endregion Command properties
 
         #region Public properties
+        public KeynoteViewModel SelectedKeynote
+        {
+            get
+            {
+                return _selectedKeynote;
+            }
 
-        public ObservableCollection<KeynoteViewModel> RootKeynotes { get { return _rootKeynotes; } set { _rootKeynotes = value; OnPropertyChanged(nameof(RootKeynotes)); } }
+            set
+            {
+                _selectedKeynote = value;
+                OnPropertyChanged(nameof(SelectedKeynote));
+            }
+        }
+
+        public ObservableCollection<KeynoteViewModel> RootKeynotes 
+        { 
+            get 
+            { 
+                return _rootKeynotes; 
+            } 
+            set 
+            { 
+                _rootKeynotes = value; 
+                OnPropertyChanged(nameof(RootKeynotes)); 
+            } 
+        }
 
         public string SearchText
         {
@@ -72,19 +97,6 @@ namespace lm_km.core
             }
         }
 
-        public KeynoteViewModel SelectedKeynote
-        {
-            get
-            {
-                return _selectedKeynote;
-            }
-
-            set
-            {
-                _selectedKeynote = value;
-                OnPropertyChanged(nameof(SelectedKeynote));
-            }
-        }
 
         #endregion Public properties
 
@@ -130,7 +142,7 @@ namespace lm_km.core
         /// </summary>
         private void VerifyMatchingEnumerator()
         {
-            var matches = this.FindMatches(_searchText, _keynoteList);
+            var matches = this.FindMatches(_searchText, _keynoteList.ToList());
             _matchingKeynoteEnumerator = matches.GetEnumerator();
 
             if (!_matchingKeynoteEnumerator.MoveNext())
@@ -150,25 +162,19 @@ namespace lm_km.core
 
         private void AddViewBtnExec()
         {
-            if (SelectedKeynote != null)
-            {
-                SelectedKeynote = new KeynoteViewModel(SelectedKeynote.Keynote);
-            }
-            else
-            {
-                SelectedKeynote = new KeynoteViewModel(null);
-            }
-            //_pageStore.ChangeCurrentPage(new AddEditViewModel(SelectedKeynote));
+            var parentKeynoteViewModel = SelectedKeynote;
+            MediatorHelper.NotifyColleagues("ChangeView", new AddEditViewModel(null, parentKeynoteViewModel, _keynoteRepository));
         }
 
         private void EditViewBtnExec()
         {
-            //_pageStore.ChangeCurrentPage(new AddEditViewModel(SelectedKeynote));
+            var parentKeynoteViewModel = _keynoteList.ToList().Find(x => x.Category == SelectedKeynote.Parent);
+            MediatorHelper.NotifyColleagues("ChangeView", new AddEditViewModel(SelectedKeynote, parentKeynoteViewModel, _keynoteRepository));
         }
 
         private void DeleteViewBtnExec()
         {
-            // _pageStore.ChangeCurrentPage(new DeleteViewModel(_pageStore, SelectedKeynote));
+            MediatorHelper.NotifyColleagues("ChangeView", new DeleteViewModel(SelectedKeynote, _keynoteRepository));
         }
 
         /// <summary>
@@ -188,27 +194,39 @@ namespace lm_km.core
         /// </summary>
         private void BuildTree()
         {
-            _keynoteList = KeynoteList.GetItems(_path).Select(x => new KeynoteViewModel(x)).ToList();
-
-            RootKeynotes = new ObservableCollection<KeynoteViewModel>(_keynoteList.Where(x => x.Parent == null).ToList());
+            _keynoteList = new ObservableCollection<KeynoteViewModel>(_keynoteRepository.GetItems().Select(x => new KeynoteViewModel(x)).ToList());
 
             // convert category parent string to object
-            _keynoteList
-                .ForEach(item => item.Parent = _keynoteList.Find(parent => item.Parent.Category == parent.Category));
+            //_keynoteList.ForEach(item => item.Parent = _keynoteList.Find(parent => item.Parent == parent.Category));
+
+            RootKeynotes = new ObservableCollection<KeynoteViewModel>(_keynoteList.Where(x => x.Parent == "").ToList());
 
             // build hierarchy tree as observablecollection, assign nested keynotes
-            _keynoteList
+            _keynoteList.ToList()
                 .ForEach(
                 item => item.NestedKeynotes = new ObservableCollection<KeynoteViewModel>(
                     _keynoteList
-                    .Where(child => child.Parent == item)
+                    .Where(child => child.Parent == item.Category)
                     .ToList()
                     )
                 );
         }
 
+        private void KeynoteDeleted(Keynote keynote)
+        {
+            var keynoteViewModel = _keynoteList.ToList().Find(x => x.Keynote == keynote);
+            _keynoteList.Remove(keynoteViewModel);
+        }
+
+        private void KeynoteAdded(Keynote keynote)
+        {
+            var newKeynoteViewModel = new KeynoteViewModel(keynote);
+            _keynoteList.Add(newKeynoteViewModel);
+            var parentKeynoteViewModel = _keynoteList.ToList().Find(x => x.Category == newKeynoteViewModel.Parent);
+            parentKeynoteViewModel.NestedKeynotes.Add(newKeynoteViewModel);
+        }
+
         #endregion Private Methods
 
-        //TODO implement dispose
     }
 }

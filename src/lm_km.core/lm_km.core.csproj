@@ -79,13 +79,14 @@
   <ItemGroup>
     <Compile Include="Commands\PaneIdentifiers.cs" />
     <Compile Include="CoreAssembly.cs" />
+    <Compile Include="DataModels\RVT_App.cs" />
     <Compile Include="Types\KeynoteStateTypes.cs" />
     <Compile Include="ViewModels\AddEditViewModel.cs" />
     <Compile Include="ViewModels\Commands\RelayCommand.cs" />
     <Compile Include="Commands\RibbonPanel\HideKeynoteManagerCommand.cs" />
     <Compile Include="Commands\RibbonPanel\ShowKeynoteManagerCommand.cs" />
     <Compile Include="DataModels\Keynote.cs" />
-    <Compile Include="DataAccess\KeynoteList.cs" />
+    <Compile Include="DataAccess\KeynoteRepository.cs" />
     <Compile Include="Helpers\CSV_Helper.cs" />
     <Compile Include="Helpers\MediatorHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

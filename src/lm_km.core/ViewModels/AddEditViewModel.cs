@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 namespace lm_km.core
 {
@@ -12,12 +7,27 @@ namespace lm_km.core
         private ICommand _applyBtnCommand;
         private ICommand _discardBtnCommand;
 
-        public AddEditViewModel(KeynoteViewModel keynoteViewModel)
+        public AddEditViewModel(KeynoteViewModel keynoteViewModel, KeynoteViewModel parentKeynoteViewModel, KeynoteRepository keynoteRepository)
         {
-            CurrentKeynote = keynoteViewModel;
+            if(keynoteViewModel == null)
+            {
+                CurrentKeynote = new KeynoteViewModel(
+                    new Keynote()
+                    {
+                        Parent = parentKeynoteViewModel.Category,
+                        Text = "",
+                        Category = "",
+                    });
+            }
+            else
+            {
+                CurrentKeynote = keynoteViewModel;
+            }
+            KeynoteRepository = keynoteRepository;
         }
 
         public KeynoteViewModel CurrentKeynote { get; set; }
+        public KeynoteRepository KeynoteRepository { get; set; }
         public bool IsComboBoxEnabled { get => false; }
 
         public ICommand DiscardBtnCommand
@@ -31,6 +41,7 @@ namespace lm_km.core
                 return _discardBtnCommand;
             }
         }
+
         public ICommand ApplyBtnCommand
         {
             get
@@ -43,18 +54,16 @@ namespace lm_km.core
             }
         }
 
-
         private void DiscardBtnExec()
         {
-            MediatorHelper.NotifyColleagues("ChangeView", new KeynoteTreeViewModel());
+            MediatorHelper.NotifyColleagues("NavigateHome", null);
         }
-
 
         internal void ApplyBtnExec()
         {
+            KeynoteRepository.Add(CurrentKeynote.Keynote);
             CurrentKeynote.State = KeynoteStateTypes.Add;
-            MediatorHelper.NotifyColleagues("ChangeView", new KeynoteTreeViewModel());
+            MediatorHelper.NotifyColleagues("NavigateHome", null);
         }
-
     }
 }

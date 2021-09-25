@@ -12,14 +12,16 @@ namespace lm_km.core
         private ViewModelBase _currentPage;
         private Dictionary<Document, ViewModelBase> _RVTDocDict = new Dictionary<Document, ViewModelBase>();
         public ViewModelBase CurrentPage { get { return _currentPage; } set { _currentPage = value; OnPropertyChanged(nameof(CurrentPage)); } }
-
+        public ViewModelBase HomePage { get; set; }
 
         public MainPageContainerViewModel()
         {
-            CurrentPage = new KeynoteTreeViewModel();
+            CurrentPage = HomePage = new KeynoteTreeViewModel();
             RVT_App.RVT_UIControlledApp.ViewActivated += new EventHandler<ViewActivatedEventArgs>(OnRevitViewChanged);
             MediatorHelper.Register("ChangeView", OnChangeView);
+            MediatorHelper.Register("NavigateHome", OnNavigateHome);
         }
+
 
         private void OnRevitViewChanged(object sender, ViewActivatedEventArgs e)
         {
@@ -44,5 +46,10 @@ namespace lm_km.core
             ViewModelBase viewModel = o as ViewModelBase;
             CurrentPage = viewModel;
         }
+        private void OnNavigateHome(object obj)
+        {
+            CurrentPage = HomePage;
+        }
+
     }
 }
