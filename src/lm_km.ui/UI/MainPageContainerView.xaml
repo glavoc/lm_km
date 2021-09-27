@@ -15,6 +15,9 @@
     </Page.Resources>
     <ContentControl Content="{Binding CurrentPage}">
         <ContentControl.Resources>
+            <DataTemplate DataType="{x:Type core:StartPageViewModel}">
+                <local:StartView/>
+            </DataTemplate>
             <DataTemplate DataType="{x:Type core:KeynoteTreeViewModel}">
                 <local:TreeView/>
             </DataTemplate>
@@ -26,5 +29,4 @@
             </DataTemplate>
         </ContentControl.Resources>
     </ContentControl>
-
 </Page>

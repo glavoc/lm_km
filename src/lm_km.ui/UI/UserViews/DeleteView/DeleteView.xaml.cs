@@ -36,7 +36,7 @@ namespace lm_km.ui
         public DeleteView()
         {
             InitializeComponent();
-            Animation = PageAnimationType.Fade;
+            Animation = PageAnimationType.Slide;
         }
         #endregion
 

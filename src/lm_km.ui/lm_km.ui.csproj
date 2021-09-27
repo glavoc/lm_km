@@ -73,6 +73,9 @@
     <Compile Include="UI\UserViews\DeleteView\DeleteView.xaml.cs">
       <DependentUpon>DeleteView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\UserViews\HomeView\StartView.xaml.cs">
+      <DependentUpon>StartView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\UserViews\TreeView\TreeView.xaml.cs">
       <DependentUpon>TreeView.xaml</DependentUpon>
     </Compile>
@@ -115,6 +118,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\UserViews\DeleteView\DeleteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\UserViews\HomeView\StartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

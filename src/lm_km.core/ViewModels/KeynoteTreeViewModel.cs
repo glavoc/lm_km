@@ -30,17 +30,18 @@ namespace lm_km.core
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public KeynoteTreeViewModel()
+        public KeynoteTreeViewModel(KeynoteRepository keynoteRepository)
         {
-            _keynoteRepository = new KeynoteRepository();
-            _keynoteRepository.KeynoteAdded += this.KeynoteAdded;
-            _keynoteRepository.KeynoteDeleted += this.KeynoteDeleted;
+            _keynoteRepository = keynoteRepository;
+            BuildTree();
+
             _addViewBtnCommand = new RelayCommand(x => AddViewBtnExec());
             _editViewBtnCommand = new RelayCommand(x => EditViewBtnExec(), x => SelectedKeynote != null);
             _deleteViewBtnCommand = new RelayCommand(x => DeleteViewBtnExec(), x => SelectedKeynote != null);
             _refreshBtnCommand = new RelayCommand(x => { RefreshBtnExec(); });
             _searchCommand = new RelayCommand(x => { { PerformSearch(); } });
         }
+
 
 
         #endregion Constructor
@@ -96,6 +97,9 @@ namespace lm_km.core
                 _matchingKeynoteEnumerator = null;
             }
         }
+
+        public ObservableCollection<KeynoteViewModel> KeynoteList { get => _keynoteList; set => _keynoteList = value; }
+
 
 
         #endregion Public properties
@@ -163,18 +167,18 @@ namespace lm_km.core
         private void AddViewBtnExec()
         {
             var parentKeynoteViewModel = SelectedKeynote;
-            MediatorHelper.NotifyColleagues("ChangeView", new AddEditViewModel(null, parentKeynoteViewModel, _keynoteRepository));
+            MediatorHelper.NotifyColleagues("ChangeView", new AddEditViewModel(null, parentKeynoteViewModel, this));
         }
 
         private void EditViewBtnExec()
         {
             var parentKeynoteViewModel = _keynoteList.ToList().Find(x => x.Category == SelectedKeynote.Parent);
-            MediatorHelper.NotifyColleagues("ChangeView", new AddEditViewModel(SelectedKeynote, parentKeynoteViewModel, _keynoteRepository));
+            MediatorHelper.NotifyColleagues("ChangeView", new AddEditViewModel(SelectedKeynote, parentKeynoteViewModel, this));
         }
 
         private void DeleteViewBtnExec()
         {
-            MediatorHelper.NotifyColleagues("ChangeView", new DeleteViewModel(SelectedKeynote, _keynoteRepository));
+            MediatorHelper.NotifyColleagues("ChangeView", new DeleteViewModel(SelectedKeynote, this));
         }
 
         /// <summary>
@@ -182,7 +186,7 @@ namespace lm_km.core
         /// </summary>
         private void RefreshBtnExec()
         {
-            BuildTree();
+            MediatorHelper.NotifyColleagues("OnKeynoteRepositorySaved", null);
         }
 
         #endregion Command Methods
@@ -212,19 +216,24 @@ namespace lm_km.core
                 );
         }
 
-        private void KeynoteDeleted(Keynote keynote)
+        internal void Insert(KeynoteViewModel newKeynote)
         {
-            var keynoteViewModel = _keynoteList.ToList().Find(x => x.Keynote == keynote);
-            _keynoteList.Remove(keynoteViewModel);
+            KeynoteList.Add(newKeynote);
+            //Add new keynote to parents nested keynotes list
+            KeynoteList.ToList().Find(x => newKeynote.Parent == x.Category).NestedKeynotes.Add(newKeynote);
+            //Notify all subscribers
+            MediatorHelper.NotifyColleagues("OnKeynoteAdd", newKeynote.Keynote);
         }
 
-        private void KeynoteAdded(Keynote keynote)
+        internal void Delete(KeynoteViewModel keynote)
         {
-            var newKeynoteViewModel = new KeynoteViewModel(keynote);
-            _keynoteList.Add(newKeynoteViewModel);
-            var parentKeynoteViewModel = _keynoteList.ToList().Find(x => x.Category == newKeynoteViewModel.Parent);
-            parentKeynoteViewModel.NestedKeynotes.Add(newKeynoteViewModel);
+            KeynoteList.ToList().Find(x => keynote.Parent == x.Category).NestedKeynotes.Remove(keynote);
+            KeynoteList.Remove(keynote);
+            //Notify all subscribers
+            MediatorHelper.NotifyColleagues("OnKeynoteDelete", keynote.Keynote);
+
         }
+
 
         #endregion Private Methods
 

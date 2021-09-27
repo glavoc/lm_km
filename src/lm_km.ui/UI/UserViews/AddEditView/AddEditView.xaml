@@ -31,11 +31,11 @@
         </Grid.RowDefinitions>
         <ComboBox 
             IsEnabled="{Binding IsComboBoxEnabled}"
-            ItemsSource="{Binding KeynoteRepository}" 
-            SelectedItem="{Binding CurrentKeynote.KeynoteParent, Mode=OneWay}" 
+            ItemsSource="{Binding KeynoteList}" 
+            DisplayMemberPath="Category"
+            SelectedValue="{Binding KeynoteParent, Mode=OneWay}" 
             Style="{StaticResource MainComboBox}"
-            DisplayMemberPath="KeynoteCategoryNumber" 
-            x:Name="ParentCategoryComboBox" Margin="10,5" 
+            Margin="10,5" 
             Grid.Row="2" />
         <Label 
             HorizontalAlignment="Left" 

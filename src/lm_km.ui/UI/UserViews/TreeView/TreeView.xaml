@@ -29,7 +29,7 @@
                 </LinearGradientBrush>
             </Grid.Background>
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="50"/>
                 <RowDefinition MinHeight="200"/>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
@@ -37,11 +37,7 @@
                 <Button 
                     Command="{Binding SearchCommand}" 
                     Content="Find" 
-                    Padding="3"
                     Width="46"
-                    FontSize="{StaticResource SmallFontSize}" 
-                    HorizontalAlignment="Left" 
-                    HorizontalContentAlignment="Right"
                     Margin="10,10,0,10"
                     Style="{StaticResource MainButton}"
                     />

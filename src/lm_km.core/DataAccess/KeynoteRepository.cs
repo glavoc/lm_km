@@ -7,12 +7,18 @@ namespace lm_km.core
 {
     public class KeynoteRepository
     {
+        private string _path;
+        private List<Keynote> _keynoteEntriesList;
+
         public event Action<Keynote> KeynoteAdded;
         public event Action<Keynote> KeynoteDeleted;
-        private List<Keynote> _keynoteEntriesList { get; set; }
+        public List<Keynote> keynoteEntriesList { get => _keynoteEntriesList; set => _keynoteEntriesList = value; }
 
         public KeynoteRepository()
         {
+            MediatorHelper.Register("OnKeynoteAdd", Insert);
+            MediatorHelper.Register("OnKeynoteDelete", Delete);
+            MediatorHelper.Register("OnKeynoteRepositorySaved", SaveKeynotes);
         }
 
         private Keynote Get(string category)
@@ -23,20 +29,20 @@ namespace lm_km.core
         public List<Keynote> GetItems()
         {
             var dic = KeynoteTable.GetKeynoteTable(RVT_App.RVT_UIApp.ActiveUIDocument.Document).GetExternalResourceReferences();
-            var path = dic.Values.FirstOrDefault().InSessionPath;
-            _keynoteEntriesList = CSV_Helper.ReadCSVFile(path);
+            _path = dic.Values.FirstOrDefault().InSessionPath;
+            _keynoteEntriesList = CSV_Helper.ReadCSVFile(_path);
             return _keynoteEntriesList;
         }
 
-        public void Add(Keynote keynote)
+        public void Insert(object o)
         {
+            var keynote = o as Keynote;
             _keynoteEntriesList.Add(keynote);
-            KeynoteAdded?.Invoke(keynote);
         }
-        public void Delete(Keynote keynote)
+        public void Delete(object o)
         {
+            var keynote = o as Keynote;
             _keynoteEntriesList.Remove(keynote);
-            KeynoteDeleted?.Invoke(keynote);
         }
         public void Edit(Keynote newKeynote, Keynote oldKeynote)
         {
@@ -45,11 +51,11 @@ namespace lm_km.core
             oldKeynote.Parent = newKeynote.Parent;
         }
 
-        public void SaveKeynotes()
+        private void SaveKeynotes(object o)
         {
-            throw new NotImplementedException();
+            CSV_Helper.WriteCSVFile(_keynoteEntriesList, _path);
         }
-        public void ReloadKeynotes()
+        private void ReloadKeynotes()
         {
             throw new NotImplementedException();
         }

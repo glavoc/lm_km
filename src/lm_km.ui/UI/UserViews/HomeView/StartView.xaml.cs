@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,21 +16,14 @@ using System.Windows.Shapes;
 namespace lm_km.ui
 {
     /// <summary>
-    /// Interaction logic for AddKeynoteWindow.xaml
+    /// Interaction logic for HomeView.xaml
     /// </summary>
-    public partial class AddEditView : PageBase
+    public partial class StartView : PageBase
     {
-
-        #region constructor
-        /// <summary>
-        /// Default Constructor
-        /// </summary>
-        /// <param name="action"></param>
-        public AddEditView()
+        public StartView()
         {
             InitializeComponent();
-            Animation = PageAnimationType.Slide;
+            Animation = PageAnimationType.Fade;
         }
-        #endregion
     }
 }

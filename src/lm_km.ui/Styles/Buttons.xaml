@@ -14,7 +14,6 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="FontFamily" Value="{StaticResource OpenSansLite}" />
         <Setter Property="FontSize" Value="{StaticResource RegularFontSize}" />
-        <Setter Property="Padding" Value="1" />
         <Setter Property="Margin" Value="10" />
 
         <!-- Overide default button content. -->

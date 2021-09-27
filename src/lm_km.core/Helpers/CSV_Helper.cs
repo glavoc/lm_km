@@ -18,22 +18,16 @@ namespace lm_km.core
         {
             try
             {
-                //filehelper object
-                FileHelperEngine engine = new FileHelperEngine(typeof(Keynote));
-                //csv object
-                List<Keynote> csv = new List<Keynote>();
-                //convert any datasource to csv based object
-
-                foreach (var item in dataSource)
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
                 {
-                    Keynote temp = new Keynote();
-                    temp.Category = item.Category;
-                    temp.Text = item.Text;
-                    temp.Parent = item.Parent;
-                    csv.Add(temp);
+                    HasHeaderRecord = false,
+                    Delimiter = "\t",
+                };
+                using (var writer = new StreamWriter(path))
+                using (var csv = new CsvWriter(writer, config))
+                {
+                    csv.WriteRecords(dataSource);
                 }
-                //save file locally
-                engine.WriteFile(path, csv);
             }
             catch (Exception ex)
             {
