@@ -23,6 +23,7 @@
             Content="Fetch" 
             HorizontalAlignment="Center" 
             VerticalAlignment="Center" 
+            Width="200"
             Style="{StaticResource MainButton}" 
             Command="{Binding FetchKeynotesBtnCommand}"/>
 

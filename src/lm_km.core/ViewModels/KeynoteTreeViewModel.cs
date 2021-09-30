@@ -198,22 +198,26 @@ namespace lm_km.core
         /// </summary>
         private void BuildTree()
         {
-            _keynoteList = new ObservableCollection<KeynoteViewModel>(_keynoteRepository.GetItems().Select(x => new KeynoteViewModel(x)).ToList());
+            try
+            {
+                _keynoteList = new ObservableCollection<KeynoteViewModel>(_keynoteRepository.GetItems().Select(x => new KeynoteViewModel(x)).ToList());
+                // convert category parent string to object
+                //_keynoteList.ForEach(item => item.Parent = _keynoteList.Find(parent => item.Parent == parent.Category));
+                RootKeynotes = new ObservableCollection<KeynoteViewModel>(_keynoteList.Where(x => x.Parent == "").ToList());
+                // build hierarchy tree as observablecollection, assign nested keynotes
+                _keynoteList.ToList()
+                    .ForEach(
+                    item => item.NestedKeynotes = new ObservableCollection<KeynoteViewModel>(
+                        _keynoteList
+                        .Where(child => child.Parent == item.Category)
+                        .ToList()
+                        ));
+            }
+            catch (Exception)
+            {
 
-            // convert category parent string to object
-            //_keynoteList.ForEach(item => item.Parent = _keynoteList.Find(parent => item.Parent == parent.Category));
-
-            RootKeynotes = new ObservableCollection<KeynoteViewModel>(_keynoteList.Where(x => x.Parent == "").ToList());
-
-            // build hierarchy tree as observablecollection, assign nested keynotes
-            _keynoteList.ToList()
-                .ForEach(
-                item => item.NestedKeynotes = new ObservableCollection<KeynoteViewModel>(
-                    _keynoteList
-                    .Where(child => child.Parent == item.Category)
-                    .ToList()
-                    )
-                );
+                MessageBox.Show("Error", "No Keynote file loaded to Revit");
+            }
         }
 
         internal void Insert(KeynoteViewModel newKeynote)

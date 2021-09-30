@@ -1,4 +1,6 @@
+using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using System.Collections.Generic;
 
 namespace lm_km.core
 {
@@ -19,6 +21,10 @@ namespace lm_km.core
         /// The Revit UIApplication.
         /// </value>
         public static UIApplication RVT_UIApp  { get; set; }
+        /// <summary>
+        /// Container for pairing <see cref="Document"/> and <see cref="MainPageContainerViewModel.CurrentPage"/>
+        /// </summary>
+        public static Dictionary<Document, ViewModelBase> RVTDocDictContainer = new Dictionary<Document, ViewModelBase>();
         #endregion
     }
 }

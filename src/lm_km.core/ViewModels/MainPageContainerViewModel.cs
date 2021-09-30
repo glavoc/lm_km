@@ -18,18 +18,18 @@ namespace lm_km.core
         { 
             get 
             { 
-                if (!RVTDocDictContainer.ContainsKey(_currentDocument)
+                if (!RVT_App.RVTDocDictContainer.ContainsKey(_currentDocument))
                 {
                     return new StartPageViewModel(this); 
                 }
                 else
                 {
-                    return RVTDocDictContainer[_currentDocument];
+                    return RVT_App.RVTDocDictContainer[_currentDocument];
                 }
             } 
             set 
-            { 
-                RVTDocDictContainer[_currentDocument] = value; 
+            {
+                RVT_App.RVTDocDictContainer[_currentDocument] = value; 
                 OnPropertyChanged(nameof(CurrentPage)); 
             } 
         }
@@ -38,7 +38,7 @@ namespace lm_km.core
 
         public MainPageContainerViewModel()
         {
-            CurrentPage = new StartPageViewModel(this);
+            //CurrentPage = new StartPageViewModel(this);
             RVT_App.RVT_UIControlledApp.ViewActivated += new EventHandler<ViewActivatedEventArgs>(OnRevitViewChanged);
             MediatorHelper.Register("ChangeView", OnChangeView);
             MediatorHelper.Register("NavigateHome", OnNavigateHome);
@@ -47,7 +47,15 @@ namespace lm_km.core
 
         private void OnRevitViewChanged(object sender, ViewActivatedEventArgs e)
         {
-            // create logic for document first opened and assign current page to new start page
+            _currentDocument = e.Document;
+            if (RVT_App.RVTDocDictContainer.ContainsKey(_currentDocument))
+            {
+                CurrentPage = RVT_App.RVTDocDictContainer[_currentDocument];
+            }
+            else
+            {
+                CurrentPage = new StartPageViewModel(this);
+            }
 
             /*if ((e.PreviousActiveView != null) && (e.PreviousActiveView.Document != null)) // start screen has neither view nor document
             {
