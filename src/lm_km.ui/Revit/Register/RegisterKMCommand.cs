@@ -20,7 +20,7 @@ namespace lm_km.ui
         public Result Execute(UIApplication uiapp)
         {
             var data = new DockablePaneProviderData();
-            var managerPage = new MainPageContainerView();
+            var managerPage = new MainPageContainerView(uiapp);
 
             data.FrameworkElement = managerPage as FrameworkElement;
 
