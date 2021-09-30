@@ -10,9 +10,30 @@ namespace lm_km.core
     public class MainPageContainerViewModel : ViewModelBase
     {
         private ViewModelBase _currentPage;
-        private Dictionary<Document, ViewModelBase> _RVTDocDict = new Dictionary<Document, ViewModelBase>();
+        private Document _currentDocument;
 
-        public ViewModelBase CurrentPage { get { return _currentPage; } set { _currentPage = value; OnPropertyChanged(nameof(CurrentPage)); } }
+
+        //public ViewModelBase CurrentPage { get { return _currentPage; } set { _currentPage = value; OnPropertyChanged(nameof(CurrentPage)); } }
+        public ViewModelBase CurrentPage 
+        { 
+            get 
+            { 
+                if (!RVTDocDictContainer.ContainsKey(_currentDocument)
+                {
+                    return new StartPageViewModel(this); 
+                }
+                else
+                {
+                    return RVTDocDictContainer[_currentDocument];
+                }
+            } 
+            set 
+            { 
+                RVTDocDictContainer[_currentDocument] = value; 
+                OnPropertyChanged(nameof(CurrentPage)); 
+            } 
+        }
+        
         public ViewModelBase HomePage { get; set; }
 
         public MainPageContainerViewModel()
@@ -26,7 +47,9 @@ namespace lm_km.core
 
         private void OnRevitViewChanged(object sender, ViewActivatedEventArgs e)
         {
-            if ((e.PreviousActiveView != null) && (e.PreviousActiveView.Document != null)) // start screen has neither view nor document
+            // create logic for document first opened and assign current page to new start page
+
+            /*if ((e.PreviousActiveView != null) && (e.PreviousActiveView.Document != null)) // start screen has neither view nor document
             {
                 if (!e.PreviousActiveView.Document.Equals(e.CurrentActiveView.Document))
                 {
@@ -39,7 +62,7 @@ namespace lm_km.core
                         TaskDialog.Show("Title", "Document doesnot exist");
                     }
                 }
-            }
+            }*/
         }
 
         private void OnChangeView(object o)
